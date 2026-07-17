@@ -222,6 +222,23 @@
       font-size: 1.02rem;
     }
 
+    .result-notes {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 2px solid #c5d0e0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .result-notes p {
+      margin: 0.35rem 0 0;
+    }
+
+    .result-notes p:first-child {
+      margin-top: 0;
+    }
+
     @media (max-width: 860px) {
       .io-pair {
         grid-template-columns: 1fr;
@@ -256,7 +273,7 @@
                 <div class="field">
                   <label for="cdfInput">Given Cumulative probability P(Z &lt; z)</label>
                   <div class="control">
-                    <input type="number" id="cdfInput" value="0.9" step="any">
+                    <input type="number" id="cdfInput" value="0.95" step="any">
                   </div>
                 </div>
               </div>
@@ -356,6 +373,11 @@
                   <span class="result-name">Expected underage qty</span>
                   <span class="result-value" id="unqResult">—</span>
                 </div>
+              </div>
+              <div class="result-notes">
+                <p>Demand filled from Q &rarr; E.g., Regular Season Sales</p>
+                <p>Overage &rarr; E.g., Leftover</p>
+                <p>Underage &rarr; E.g., Lost Sales</p>
               </div>
             </div>
           </div>
@@ -482,6 +504,10 @@
       return Number(value).toFixed(digits);
     }
 
+    function formatStandardNormal(value) {
+      return formatValue(value, 4);
+    }
+
     function formatZ(value) {
       return formatValue(value, 3);
     }
@@ -494,8 +520,8 @@
       const probability = Number(document.getElementById("cdfInput").value);
       const zValue = Number(document.getElementById("zInput").value);
 
-      setText("cdfToZResult", formatZ(inverseNormalCdf(probability)));
-      setText("zToCdfResult", formatValue(normalCdf(zValue)));
+      setText("cdfToZResult", formatStandardNormal(inverseNormalCdf(probability)));
+      setText("zToCdfResult", formatStandardNormal(normalCdf(zValue)));
     }
 
     function refreshNewsvendor() {
